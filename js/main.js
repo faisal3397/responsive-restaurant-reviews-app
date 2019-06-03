@@ -146,8 +146,9 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
+  let tabIndex = 1;
   restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
+    ul.append(createRestaurantHTML(restaurant, tabIndex++));
   });
   addMarkersToMap();
 }
@@ -155,12 +156,14 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
-createRestaurantHTML = (restaurant) => {
+createRestaurantHTML = (restaurant, tabIndex) => {
   const li = document.createElement('li');
-
+  li.tabIndex = tabIndex;
+  li.setAttribute('aria-label', `info about ${restaurant.name}`)
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('alt', restaurant.name)
   li.append(image);
 
   const name = document.createElement('h1');
@@ -178,6 +181,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  li.setAttribute('aria-label', `view details about ${restaurant.name}`)
   li.append(more)
 
   return li

@@ -106,9 +106,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
  */
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
+  let tabIndex = 1;
   for (let key in operatingHours) {
     const row = document.createElement('tr');
-
+    row.tabIndex = tabIndex;
     const day = document.createElement('td');
     day.innerHTML = key;
     row.appendChild(day);
@@ -127,6 +128,8 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
+  let tabIndex = 1;
+  title.tabIndex = tabIndex
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -138,7 +141,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   }
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
+    ul.appendChild(createReviewHTML(review, tabIndex++));
   });
   container.appendChild(ul);
 }
@@ -146,22 +149,28 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 /**
  * Create review HTML and add it to the webpage.
  */
-createReviewHTML = (review) => {
+createReviewHTML = (review, tabIndex) => {
   const li = document.createElement('li');
+  li.tabIndex = tabIndex;
+  li.setAttribute('aria-label', `review about the resturant`)
   const name = document.createElement('p');
   name.innerHTML = review.name;
+  name.setAttribute('id','name')
   li.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
+  date.setAttribute('id','date')
   li.appendChild(date);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
+  rating.setAttribute('id','rating')
   li.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.setAttribute('id','comments')
   li.appendChild(comments);
 
   return li;
